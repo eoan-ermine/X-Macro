@@ -1,3 +1,5 @@
+use x_macro::gui;
+
 fn main() {
-    println!("Hello, world!");
+	gui::initialize();
 }

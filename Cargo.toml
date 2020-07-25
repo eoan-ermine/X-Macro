@@ -7,3 +7,14 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+inputbot = { git = "https://github.com/obv-mikhail/InputBot" }
+peg = "0.6.3"
+druid = "0.6"
+
+#[dependencies.gtk]
+#version = "0.9.0"
+#features = ["v3_16"]
+
+#[dependencies.gio]
+#version = ""
+#features = ["v2_44"]
