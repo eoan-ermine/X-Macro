@@ -8,7 +8,8 @@ edition = "2018"
 
 [dependencies]
 inputbot = { git = "https://github.com/obv-mikhail/InputBot", branch="develop" }
-peg = "0.6.3"
+pest = "2"
+pest_derive = "2.0"
 druid = "0.7"
 
 #[dependencies.gtk]

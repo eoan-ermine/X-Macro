@@ -1,0 +1,125 @@
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+
+integer = @{ ("+" | "-")? ~ ASCII_DIGIT+ }
+string = @{ "\"" ~ LETTER* ~ "\""}
+
+key = @{
+    "BackspaceKey" | 
+    "TabKey"" |
+    "EnterKey"" |
+    "EscapeKey"" |
+    "SpaceKey"" |
+    "HomeKey"" |
+    "LeftKey"" |
+    "UpKey" |
+    "RightKey" |
+    "DownKey" |
+    "InsertKey" |
+    "DeleteKey" |
+    "Numrow0Key" |
+    "Numrow1Key" |
+    "Numrow2Key" |
+    "Numrow3Key" |
+    "Numrow4Key" |
+    "Numrow5Key" |
+    "Numrow6Key" |
+    "Numrow7Key" |
+    "Numrow8Key" |
+    "Numrow9Key" |
+    "AKey" |
+    "BKey" |
+    "CKey" |
+    "DKey" |
+    "EKey" |
+    "FKey" |
+    "GKey" |
+    "HKey" |
+    "IKey" |
+    "JKey" |
+    "KKey" |
+    "LKey" |
+    "MKey" |
+    "NKey" |
+    "OKey" |
+    "PKey" |
+    "QKey" |
+    "RKey" |
+    "SKey" |
+    "TKey" |
+    "UKey" |
+    "VKey" |
+    "WKey" |
+    "XKey" |
+    "YKey" |
+    "ZKey" |
+    "Numpad0Key" |
+    "Numpad1Key" |
+    "Numpad2Key" |
+    "Numpad3Key" |
+    "Numpad4Key" |
+    "Numpad5Key" |
+    "Numpad6Key" |
+    "Numpad7Key" |
+    "Numpad8Key" |
+    "Numpad9Key" |
+    "F1Key" |
+    "F2Key" |
+    "F3Key" |
+    "F4Key" |
+    "F5Key" |
+    "F6Key" |
+    "F7Key" |
+    "F8Key" |
+    "F9Key" |
+    "F10Key" |
+    "F11Key" |
+    "F12Key" |
+    "F13Key" |
+    "F14Key" |
+    "F15Key" |
+    "F16Key" |
+    "F17Key" |
+    "F18Key" |
+    "F19Key" |
+    "F20Key" |
+    "F21Key" |
+    "F22Key" |
+    "F23Key" |
+    "F24Key" |
+    "NumLockKey" |
+    "ScrollLockKey" |
+    "CapsLockKey" |
+    "LShiftKey" |
+    "RShiftKey" |
+    "LControlKey" |
+    "RControlKey" |
+    "OtherKey(" ~ integer ~ ")"
+}
+button = @{
+    "LeftButton" |
+    "MiddleButton" |
+    "RightButton" |
+    "X1Button" |
+    "X2Button" |
+    "OtherButton(" ~ integer ~ ")"
+}
+
+move_type = { "relative" | "absolute" }
+scroll_type = { "vertical" | "horizontal" }
+
+keyboard_press_action = "press(" ~ key ~ ")"
+keyboard_release_action = "release(" ~ key ~ ")"
+keyboard_write_action = "write(" ~ string ~ ")"
+
+mouse_press_action = "press(" ~ button ~ ")"
+mouse_release_action = "release(" ~ button ~ ")"
+mouse_move_action = "move(" ~ move_type ~ "," ~ integer ~ "," ~ integer ")"
+mouse_scroll_action = "scroll(" ~ scroll_type ~ "," ~ integer ~ ")"
+
+keyboard_action = { keyboard_press_action | keyboard_release_action | keyboard_write_action}
+mouse_action = { mouse_press_action | mouse_release_action | mouse_move_action | mouse_scroll_action }
+
+keyboard_statement = { "keyboard::" ~ keyboard_action }
+mouse_statement = { "mouse::" ~ mouse_action }
+
+statement = { keyboard_statement | mouse_statement }
