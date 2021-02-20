@@ -37,17 +37,15 @@ fn ui_builder() -> impl Widget<State> {
 		.fix_width(500.0)
 		.lens(State::trigger);
 
-	let actions_ch = TextBox::new()
-		.with_placeholder("Input path to file with macro")
+	let actions_ch = TextBox::multiline()
+		.with_placeholder("Write macro")
 		.fix_width(500.0)
 		.lens(State::actions);
 
 	let button = Button::new("Bind")
 		.on_click(|_ctx, data: &mut State, _env| {
 			let trigger = data.trigger.clone();
-
-			let mut contents = String::new();
-			File::open(data.actions.clone()).unwrap().read_to_string(&mut contents).unwrap();
+			let mut contents = data.actions.clone();
 
 			let trigger = Trigger::parse(&trigger.trim());
 			let actions = Executor::parse(&contents);

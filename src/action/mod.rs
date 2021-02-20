@@ -51,13 +51,13 @@ impl Action {
 					MouseAction::Press(button) => button.press(),
 					MouseAction::Release(button) => button.release(),
 					MouseAction::Move(x, y) => {
-						MouseCursor.move_abs(*x, -*y);
+						MouseCursor::move_abs(*x, -*y);
 					},
 					MouseAction::Scroll(orientation, delta) => {
 						if let Orientation::Vertical = orientation {
-							MouseWheel.scroll_ver(*delta);
+							MouseWheel::scroll_ver(*delta);
 						} else {
-							MouseWheel.scroll_hor(*delta);
+							MouseWheel::scroll_hor(*delta);
 						}
 					}
 				}
