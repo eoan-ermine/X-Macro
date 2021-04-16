@@ -1,24 +1,7 @@
-use std::time::Duration;
+pub mod parser;
 
 use inputbot::{KeybdKey, MouseButton};
-
-pub struct Wait {
-    duration: Duration,
-}
-
-pub enum InputAction {
-    Press,
-    Release,
-}
-
-pub enum OtherAction {
-    Wait(Wait),
-}
-
-pub enum Action {
-    Input(InputAction),
-    Other(OtherAction),
-}
+use parser::entities::actions::{input_action::InputAction, other_action::OtherAction, Action};
 
 pub trait Key {
     fn press(&self);
