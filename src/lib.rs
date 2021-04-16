@@ -3,6 +3,9 @@ pub mod parser;
 use inputbot::{KeybdKey, MouseButton};
 use parser::entities::actions::{input_action::InputAction, other_action::OtherAction, Action};
 
+#[macro_use]
+extern crate pest_derive;
+
 pub trait Key {
     fn press(&self);
     fn release(&self);

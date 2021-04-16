@@ -1,4 +1,7 @@
 use inputbot::KeybdKey;
+use pest::iterators::Pair;
+
+use crate::parser::entities::{Parse, Rule};
 
 pub(crate) trait FromName {
     fn try_from(name: &str) -> Result<Self, ()>
@@ -112,5 +115,12 @@ impl FromName for KeybdKey {
                 }
             }
         })
+    }
+}
+
+impl Parse for KeybdKey {
+    fn parse(pair: Pair<Rule>) -> Self {
+        let name = pair.as_str();
+        KeybdKey::try_from(name).unwrap()
     }
 }

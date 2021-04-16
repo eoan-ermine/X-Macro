@@ -1,21 +1,23 @@
 num = @{ int ~ ("." ~ ASCII_DIGIT*)? ~ (^"e" ~ int)? }
     int = { ("+" | "-")? ~ ASCII_DIGIT+ }
 
-time_unit = {
-    "ms" | "s"
+time_unit = _{
+    ms | s
 }
+    ms = { "ms" }
+    s = { "s" }
 
 input_action = {
     press | release
 }
-    press = "press"
-    release = "release"
+    press = { "press" }
+    release = { "release" }
 
 
 other_action = {
     wait
 }
-    wait = "wait"
+    wait = _{ "wait" }
 
 action = _{
     input_action | other_action
@@ -127,7 +129,7 @@ keybd_key = {
     "RShiftKey" |
     "LControlKey" |
     "RControlKey" |
-    { "OtherKey" ~ "(" ~ int ~ ")" }
+    ("OtherKey" ~ "(" ~ int ~ ")")
 }
 
 mouse_button = {
@@ -136,14 +138,15 @@ mouse_button = {
     "RightButton" |
     "X1Button" |
     "X2Button" |
-    { "OtherButton" ~ "(" ~ int ~ ")" }
+    ("OtherButton" ~ "(" ~ int ~ ")")
 }
 
 key = _{
     keybd_key | mouse_button
 }
 
+
 instruction = {
     key ~ ("." ~ invoke)+ ~ ("." ~ await)*
 }
-    await = "await"
+    await = { "await" }

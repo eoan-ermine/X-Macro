@@ -1,4 +1,7 @@
 use inputbot::MouseButton;
+use pest::iterators::Pair;
+
+use crate::parser::entities::{Parse, Rule};
 
 use super::keybd_key::FromName;
 
@@ -25,5 +28,12 @@ impl FromName for MouseButton {
                 }
             }
         })
+    }
+}
+
+impl Parse for MouseButton {
+    fn parse(pair: Pair<Rule>) -> Self {
+        let name = pair.as_str();
+        MouseButton::try_from(name).unwrap()
     }
 }

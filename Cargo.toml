@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 inputbot = "0.5"
+pest = "2"
+pest_derive = "2"
