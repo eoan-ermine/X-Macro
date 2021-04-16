@@ -1,0 +1,149 @@
+num = @{ int ~ ("." ~ ASCII_DIGIT*)? ~ (^"e" ~ int)? }
+    int = { ("+" | "-")? ~ ASCII_DIGIT+ }
+
+time_unit = {
+    "ms" | "s"
+}
+
+input_action = {
+    press | release
+}
+    press = "press"
+    release = "release"
+
+
+other_action = {
+    wait
+}
+    wait = "wait"
+
+action = _{
+    input_action | other_action
+}
+
+input_invoke = {
+    input_action ~ "(" ~ ")"
+}
+
+wait_invoke = {
+    wait ~ "(" ~ int ~ time_unit ~ ")"
+}
+
+other_invoke = {
+    wait_invoke
+}
+
+invoke = _{
+    input_invoke | other_action
+}
+
+keybd_key = {
+    "BackspaceKey" |
+    "TabKey" |
+    "EnterKey" |
+    "EscapeKey" |
+    "SpaceKey" |
+    "HomeKey" |
+    "LeftKey" |
+    "UpKey" |
+    "RightKey" |
+    "DownKey" |
+    "InsertKey" |
+    "DeleteKey" |
+    "Numrow0Key" |
+    "Numrow1Key" |
+    "Numrow2Key" |
+    "Numrow3Key" |
+    "Numrow4Key" |
+    "Numrow5Key" |
+    "Numrow6Key" |
+    "Numrow7Key" |
+    "Numrow8Key" |
+    "Numrow9Key" |
+    "AKey" |
+    "BKey" |
+    "CKey" |
+    "DKey" |
+    "EKey" |
+    "FKey" |
+    "GKey" |
+    "HKey" |
+    "IKey" |
+    "JKey" |
+    "KKey" |
+    "LKey" |
+    "MKey" |
+    "NKey" |
+    "OKey" |
+    "PKey" |
+    "QKey" |
+    "RKey" |
+    "SKey" |
+    "TKey" |
+    "UKey" |
+    "VKey" |
+    "WKey" |
+    "XKey" |
+    "YKey" |
+    "ZKey" |
+    "Numpad0Key" |
+    "Numpad1Key" |
+    "Numpad2Key" |
+    "Numpad3Key" |
+    "Numpad4Key" |
+    "Numpad5Key" |
+    "Numpad6Key" |
+    "Numpad7Key" |
+    "Numpad8Key" |
+    "Numpad9Key" |
+    "F1Key" |
+    "F2Key" |
+    "F3Key" |
+    "F4Key" |
+    "F5Key" |
+    "F6Key" |
+    "F7Key" |
+    "F8Key" |
+    "F9Key" |
+    "F10Key" |
+    "F11Key" |
+    "F12Key" |
+    "F13Key" |
+    "F14Key" |
+    "F15Key" |
+    "F16Key" |
+    "F17Key" |
+    "F18Key" |
+    "F19Key" |
+    "F20Key" |
+    "F21Key" |
+    "F22Key" |
+    "F23Key" |
+    "F24Key" |
+    "NumLockKey" |
+    "ScrollLockKey" |
+    "CapsLockKey" |
+    "LShiftKey" |
+    "RShiftKey" |
+    "LControlKey" |
+    "RControlKey" |
+    { "OtherKey" ~ "(" ~ int ~ ")" }
+}
+
+mouse_button = {
+    "LeftButton" | 
+    "MiddleButton" |
+    "RightButton" |
+    "X1Button" |
+    "X2Button" |
+    { "OtherButton" ~ "(" ~ int ~ ")" }
+}
+
+key = _{
+    keybd_key | mouse_button
+}
+
+instruction = {
+    key ~ ("." ~ invoke)+ ~ ("." ~ await)*
+}
+    await = "await"
