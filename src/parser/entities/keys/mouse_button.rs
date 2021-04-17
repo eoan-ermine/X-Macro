@@ -40,21 +40,30 @@ impl Parse for MouseButton {
 
 #[cfg(test)]
 mod tests {
-    use pest::Parser;
-    use crate::parser::entities::{GrammarParser, Rule, Parse};
+    use crate::parser::entities::{GrammarParser, Parse, Rule};
     use inputbot::MouseButton;
+    use pest::Parser;
 
     #[test]
     fn keybd_key() {
         assert_eq!(
-            MouseButton::parse(GrammarParser::parse(Rule::mouse_button, "MiddleButton").unwrap().next().unwrap()),
+            MouseButton::parse(
+                GrammarParser::parse(Rule::mouse_button, "MiddleButton")
+                    .unwrap()
+                    .next()
+                    .unwrap()
+            ),
             MouseButton::MiddleButton
         );
 
         assert_eq!(
-            MouseButton::parse(GrammarParser::parse(Rule::mouse_button, "OtherButton(256)").unwrap().next().unwrap()),
+            MouseButton::parse(
+                GrammarParser::parse(Rule::mouse_button, "OtherButton(256)")
+                    .unwrap()
+                    .next()
+                    .unwrap()
+            ),
             MouseButton::OtherButton(256)
         );
-
     }
 }

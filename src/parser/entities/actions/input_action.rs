@@ -38,18 +38,28 @@ impl Parse for InputAction {
 
 #[cfg(test)]
 mod tests {
-    use pest::Parser;
-    use crate::parser::entities::{GrammarParser, Rule, Parse};
     use super::InputAction;
+    use crate::parser::entities::{GrammarParser, Parse, Rule};
+    use pest::Parser;
 
     #[test]
     fn input_action() {
         assert_eq!(
-            InputAction::parse(GrammarParser::parse(Rule::input_action, "press").unwrap().next().unwrap()),
+            InputAction::parse(
+                GrammarParser::parse(Rule::input_action, "press")
+                    .unwrap()
+                    .next()
+                    .unwrap()
+            ),
             InputAction::Press
         );
         assert_eq!(
-            InputAction::parse(GrammarParser::parse(Rule::input_action, "release").unwrap().next().unwrap()),
+            InputAction::parse(
+                GrammarParser::parse(Rule::input_action, "release")
+                    .unwrap()
+                    .next()
+                    .unwrap()
+            ),
             InputAction::Release
         );
     }

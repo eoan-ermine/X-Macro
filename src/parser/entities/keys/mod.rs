@@ -24,34 +24,52 @@ impl Parse for Key {
 
 #[cfg(test)]
 mod tests {
+    use crate::parser::entities::{GrammarParser, Parse, Rule};
     use pest::Parser;
-    use crate::parser::entities::{GrammarParser, Rule, Parse};
-    
-    use inputbot::{MouseButton, KeybdKey};
+
     use super::Key;
+    use inputbot::{KeybdKey, MouseButton};
 
     #[test]
     fn key() {
         assert_eq!(
-            Key::parse(GrammarParser::parse(Rule::key, "AKey").unwrap().next().unwrap()),
+            Key::parse(
+                GrammarParser::parse(Rule::key, "AKey")
+                    .unwrap()
+                    .next()
+                    .unwrap()
+            ),
             Key::Keyboard(KeybdKey::AKey)
         );
 
         assert_eq!(
-            Key::parse(GrammarParser::parse(Rule::key, "OtherKey(256)").unwrap().next().unwrap()),
+            Key::parse(
+                GrammarParser::parse(Rule::key, "OtherKey(256)")
+                    .unwrap()
+                    .next()
+                    .unwrap()
+            ),
             Key::Keyboard(KeybdKey::OtherKey(256))
         );
-        
+
         assert_eq!(
-            Key::parse(GrammarParser::parse(Rule::key, "MiddleButton").unwrap().next().unwrap()),
+            Key::parse(
+                GrammarParser::parse(Rule::key, "MiddleButton")
+                    .unwrap()
+                    .next()
+                    .unwrap()
+            ),
             Key::Mouse(MouseButton::MiddleButton)
         );
 
         assert_eq!(
-            Key::parse(GrammarParser::parse(Rule::key, "OtherButton(256)").unwrap().next().unwrap()),
+            Key::parse(
+                GrammarParser::parse(Rule::key, "OtherButton(256)")
+                    .unwrap()
+                    .next()
+                    .unwrap()
+            ),
             Key::Mouse(MouseButton::OtherButton(256))
         );
     }
 }
-
-
