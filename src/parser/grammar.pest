@@ -155,3 +155,7 @@ instruction = {
     key ~ invocation_section ~ ("." ~ await)*
 }
     await = { "await" }
+
+program = {
+    SOI ~ "\n"* ~ (instruction ~ "\n"+) * ~ instruction? ~ EOI
+}

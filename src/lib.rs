@@ -1,12 +1,10 @@
 pub mod parser;
 
+use std::thread;
+
 use inputbot::{KeybdKey, MouseButton};
-use parser::entities::{
-    actions::{input_action::InputAction, other_action::OtherAction, Action},
-    keys::Key,
-    Parse, Rule,
-};
-use pest::iterators::Pair;
+use parser::entities::{GrammarParser, Parse, Rule, actions::{Action, Invoke, input_action::InputAction, other_action::OtherAction}, keys::Key};
+use pest::{Parser, iterators::Pair};
 
 #[macro_use]
 extern crate pest_derive;
@@ -45,23 +43,7 @@ pub struct Instruction {
 impl Instruction {
     pub fn execute(&self) {
         for action in &self.actions {
-            match action {
-                Action::Input(action) => match action {
-                    InputAction::Press => match self.key {
-                        Key::Keyboard(e) => e.press(),
-                        Key::Mouse(e) => e.press(),
-                    },
-                    InputAction::Release => match self.key {
-                        Key::Keyboard(e) => e.release(),
-                        Key::Mouse(e) => e.release(),
-                    },
-                },
-                Action::Other(action) => match action {
-                    OtherAction::Wait(e) => {
-                        std::thread::sleep(e.duration);
-                    }
-                },
-            }
+            action.invoke(&self.key);
         }
     }
 }
@@ -86,6 +68,33 @@ impl Parse for Instruction {
             key: Key::parse(key_rule),
             actions,
             r#await: inner.next().is_some(),
+        }
+    }
+}
+
+pub struct Executor { }
+impl Executor {
+    fn parse_instruction(pair: Pair<Rule>) -> Instruction {
+        Instruction::parse(pair)
+    }
+    pub fn execute(program: &str) {
+        let mut delayed: Vec<Instruction> = Vec::new();
+
+        let pairs = GrammarParser::parse(Rule::program, program).unwrap().next().unwrap();
+
+        for pair in pairs.into_inner() {
+            let instruction = Executor::parse_instruction(pair);
+            if instruction.r#await {
+                delayed.push(instruction);
+            } else {
+                instruction.execute();
+            }
+        }
+
+        for instruction in delayed {
+            thread::spawn(move ||
+                instruction.execute()
+            );
         }
     }
 }

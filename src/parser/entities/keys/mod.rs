@@ -1,6 +1,8 @@
 use inputbot::{KeybdKey, MouseButton};
 use pest::iterators::Pair;
 
+use crate::KeyExt;
+
 use super::{Parse, Rule};
 
 pub mod keybd_key;
@@ -10,6 +12,22 @@ pub mod mouse_button;
 pub enum Key {
     Keyboard(KeybdKey),
     Mouse(MouseButton),
+}
+
+impl KeyExt for Key {
+    fn press(&self) {
+        match self {
+            Self::Keyboard(e) => e.press(),
+            Self::Mouse(e) => e.press()
+        }
+    }
+
+    fn release(&self) {
+        match self {
+            Self::Keyboard(e) => e.release(),
+            Self::Mouse(e) => e.release()
+        }
+    }
 }
 
 impl Parse for Key {
