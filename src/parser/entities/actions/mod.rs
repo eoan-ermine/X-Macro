@@ -15,6 +15,7 @@ pub enum Action {
 
 impl Parse for Action {
     fn parse(pair: Pair<Rule>) -> Self {
+        let pair = pair.into_inner().next().unwrap();
         match pair.as_rule() {
             Rule::input_invoke => {
                 Action::Input(InputAction::parse(pair.into_inner().next().unwrap()))

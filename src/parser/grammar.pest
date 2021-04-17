@@ -37,7 +37,7 @@ other_invoke = {
     wait_invoke
 }
 
-invoke = _{
+invoke = {
     input_invoke | other_invoke
 }
 
