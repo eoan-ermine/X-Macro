@@ -124,3 +124,24 @@ impl Parse for KeybdKey {
         KeybdKey::try_from(name).unwrap()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use pest::Parser;
+    use crate::parser::entities::{GrammarParser, Rule, Parse};
+    use inputbot::KeybdKey;
+
+    #[test]
+    fn mouse_button() {
+        assert_eq!(
+            KeybdKey::parse(GrammarParser::parse(Rule::keybd_key, "AKey").unwrap().next().unwrap()),
+            KeybdKey::AKey
+        );
+
+        assert_eq!(
+            KeybdKey::parse(GrammarParser::parse(Rule::keybd_key, "OtherKey(256)").unwrap().next().unwrap()),
+            KeybdKey::OtherKey(256)
+        );
+
+    }
+}
