@@ -7,6 +7,7 @@ use crate::{
 
 use super::Invoke;
 
+#[derive(Debug, Clone, PartialEq)]
 pub enum InputAction {
     Press,
     Release,
@@ -32,5 +33,30 @@ impl Parse for InputAction {
             Rule::release => InputAction::Release,
             _ => unreachable!(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use pest::Parser;
+    use crate::parser::entities::{GrammarParser, Rule, Parse};
+    use super::InputAction;
+
+    #[test]
+    fn input_action() {
+        assert_eq!(
+            InputAction::parse(GrammarParser::parse(Rule::input_action, "press").unwrap().next().unwrap()),
+            InputAction::Press
+        );
+        assert_eq!(
+            InputAction::parse(GrammarParser::parse(Rule::input_action, "release").unwrap().next().unwrap()),
+            InputAction::Release
+        );
+    }
+
+    #[test]
+    fn input_invoke() {
+        GrammarParser::parse(Rule::input_action, "press()").unwrap();
+        GrammarParser::parse(Rule::input_invoke, "release()").unwrap();
     }
 }

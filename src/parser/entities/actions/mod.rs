@@ -7,6 +7,7 @@ use super::{Parse, Rule};
 pub mod input_action;
 pub mod other_action;
 
+#[derive(Debug, Clone, PartialEq)]
 pub enum Action {
     Input(InputAction),
     Other(OtherAction),
@@ -15,9 +16,9 @@ pub enum Action {
 impl Parse for Action {
     fn parse(pair: Pair<Rule>) -> Self {
         match pair.as_rule() {
-            Rule::input_action => Action::Input(InputAction::parse(pair)),
-            Rule::other_action => Action::Other(OtherAction::parse(pair)),
-            _ => unreachable!(),
+            Rule::input_invoke => Action::Input(InputAction::parse(pair.into_inner().next().unwrap())),
+            Rule::other_invoke => Action::Other(OtherAction::parse(pair)),
+            _ => unreachable!()
         }
     }
 }
@@ -37,5 +38,38 @@ impl Invoke for Action {
             Action::Input(e) => e.invoke(key),
             Action::Other(e) => e.invoke(key),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use pest::Parser;
+    use crate::parser::entities::{GrammarParser, Rule, Parse};
+    use crate::parser::entities::{actions::{Action, input_action::InputAction, other_action::{OtherAction, WaitAction}}};
+
+    use std::time::Duration;
+
+    #[test]
+    fn input_invoke() {
+        assert_eq!(
+            Action::parse(GrammarParser::parse(Rule::invoke, "press()").unwrap().next().unwrap()),
+            Action::Input(InputAction::Press)
+        );
+        assert_eq!(
+            Action::parse(GrammarParser::parse(Rule::invoke, "release()").unwrap().next().unwrap()),
+            Action::Input(InputAction::Release)
+        );
+    }
+
+    #[test]
+    fn other_invoke() {
+        assert_eq!(
+            Action::parse(GrammarParser::parse(Rule::invoke, "wait(250ms)").unwrap().next().unwrap()),
+            Action::Other(
+                OtherAction::Wait(
+                    WaitAction { duration: Duration::from_millis(250) }
+                )
+            )
+        );
     }
 }

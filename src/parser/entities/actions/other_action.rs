@@ -9,6 +9,7 @@ use crate::{
 
 use super::Invoke;
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct WaitAction {
     pub duration: Duration,
 }
@@ -36,6 +37,7 @@ impl Parse for WaitAction {
     }
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub enum OtherAction {
     Wait(WaitAction),
 }
@@ -58,5 +60,42 @@ impl Parse for OtherAction {
             Rule::wait_invoke => OtherAction::Wait(WaitAction::parse(inner)),
             _ => unreachable!(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use pest::Parser;
+    use crate::parser::entities::{GrammarParser, Rule, Parse};
+    use super::{OtherAction, WaitAction};
+
+    use std::time::Duration;
+
+    #[test]
+    fn wait_invoke() {
+        assert_eq!(
+            WaitAction::parse(GrammarParser::parse(Rule::wait_invoke, "wait(500ms)").unwrap().next().unwrap()),
+            WaitAction {
+                duration: Duration::from_millis(500)
+            }
+        );
+        assert_eq!(
+            WaitAction::parse(GrammarParser::parse(Rule::wait_invoke, "wait(1.25s)").unwrap().next().unwrap()),
+            WaitAction {
+                duration: Duration::from_secs_f64(1.25_f64)
+            }
+        );
+    }
+
+    #[test]
+    fn other_invoke() {
+        assert_eq!(
+            OtherAction::parse(GrammarParser::parse(Rule::other_invoke, "wait(100s)").unwrap().next().unwrap()),
+            OtherAction::Wait(
+                WaitAction {
+                    duration: Duration::from_secs(100)
+                }
+            )
+        )
     }
 }

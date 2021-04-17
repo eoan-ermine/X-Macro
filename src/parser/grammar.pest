@@ -1,3 +1,5 @@
+WHITESPACE = { " " | "\t" }
+
 num = @{ int ~ ("." ~ ASCII_DIGIT*)? ~ (^"e" ~ int)? }
     int = { ("+" | "-")? ~ ASCII_DIGIT+ }
 
@@ -28,7 +30,7 @@ input_invoke = {
 }
 
 wait_invoke = {
-    wait ~ "(" ~ int ~ time_unit ~ ")"
+    wait ~ "(" ~ num ~ time_unit ~ ")"
 }
 
 other_invoke = {
@@ -36,7 +38,7 @@ other_invoke = {
 }
 
 invoke = _{
-    input_invoke | other_action
+    input_invoke | other_invoke
 }
 
 keybd_key = {
