@@ -4,7 +4,7 @@ use pest::iterators::Pair;
 
 use crate::{
     parser::entities::{Parse, Rule},
-    Key,
+    KeyExt,
 };
 
 use super::Invoke;
@@ -43,7 +43,7 @@ pub enum OtherAction {
 impl Invoke for OtherAction {
     fn invoke<T>(&self, key: &T)
     where
-        T: Key,
+        T: KeyExt,
     {
         match self {
             OtherAction::Wait(e) => e.invoke(key),

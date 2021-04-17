@@ -1,6 +1,6 @@
 use pest::iterators::Pair;
 
-use crate::{InputAction, Key, OtherAction};
+use crate::{InputAction, KeyExt, OtherAction};
 
 use super::{Parse, Rule};
 
@@ -25,13 +25,13 @@ impl Parse for Action {
 pub trait Invoke {
     fn invoke<T>(&self, key: &T)
     where
-        T: Key;
+        T: KeyExt;
 }
 
 impl Invoke for Action {
     fn invoke<T>(&self, key: &T)
     where
-        T: Key,
+        T: KeyExt,
     {
         match self {
             Action::Input(e) => e.invoke(key),

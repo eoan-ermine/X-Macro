@@ -145,8 +145,11 @@ key = _{
     keybd_key | mouse_button
 }
 
+invocation_section = {
+    ("." ~ invoke)+
+}
 
 instruction = {
-    key ~ ("." ~ invoke)+ ~ ("." ~ await)*
+    key ~ invocation_section ~ ("." ~ await)*
 }
     await = { "await" }

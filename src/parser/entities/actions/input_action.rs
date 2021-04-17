@@ -2,7 +2,7 @@ use pest::iterators::Pair;
 
 use crate::{
     parser::entities::{Parse, Rule},
-    Key,
+    KeyExt,
 };
 
 use super::Invoke;
@@ -15,7 +15,7 @@ pub enum InputAction {
 impl Invoke for InputAction {
     fn invoke<T>(&self, key: &T)
     where
-        T: Key,
+        T: KeyExt,
     {
         match self {
             InputAction::Press => key.press(),

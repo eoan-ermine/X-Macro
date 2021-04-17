@@ -10,3 +10,9 @@ struct GrammarParser;
 pub(crate) trait Parse {
     fn parse(pair: Pair<Rule>) -> Self;
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {}
+}
